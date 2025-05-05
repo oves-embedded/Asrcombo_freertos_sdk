@@ -1,0 +1,12 @@
+ble_soc 
+d0fbeb125 
+
+driver_plat 
+2e72f5b3 
+
+freertos 
+96b6de8a 
+
+wifi_soc 
+ad74f141 
+

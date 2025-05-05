@@ -1,0 +1,67 @@
+Where to find complete joylink documentation?
+-------------------------------------------
+
+This README is just a fast "quick start" document. You can find more detailed
+documentation at http://www.jdsmart.com/joylink/
+
+Building joylink_dev_sdk
+--------------
+
+joylink_dev_sdk can be compiled and used on Linux, OSX, OpenBSD, NetBSD, FreeBSD.
+We support big endian and little endian architectures.
+
+It may compile on Linux. 
+
+step 1:
+    % 使用demo/duet_demo 工程进行测试
+    
+step 2:
+    % 把 build/build_rules/project/duet_demo/config.mk 文件里面的JOYLINK_CLOUD_SWITCH 环境变量置位1，即是：JOYLINK_CLOUD_SWITCH := 1
+
+step 3:
+    %  joylink sdk支持热点配网以及BLE配网，WIFI联网
+    %  小京鱼云平台创建设备并获取云平台上设备信息，并更新设备信息到joylink_config.h
+	   (可参考文档，创建产品：https://smartdev.jd.com/docCenterDoc/view/2/101/95400002/95900004#topMaoDot
+                    模组接入：https://smartdev.jd.com/docCenterDoc/view/2/102/152800001/190500001#topMaoDot)
+    % 修改joylink_config.h可参考如下：
+    #if 1
+		//BLE 配网设备
+        #define JLP_UUID          "534411"
+		#define IDT_CLOUD_PUB_KEY "03A9F7A1B4DB8D4B07C4CFBE7B55CD2596878096B29384691A6CA55EE0B6C5E199"
+		#define JLP_CID           "102009"
+		#define JLP_BRAND         "2"
+		#define F_PRIVATE_KEY     "F9482BF05CE388E3139C3D1E43568C150F9C2AC859C5F30F78084FE99BC2E250"
+		#define AP_SSID           "JDDeng7595"
+	#else
+		//热点AP 配网设备
+		#define JLP_UUID          "EE62BD"
+		#define IDT_CLOUD_PUB_KEY "0214B59DE3C6EB740C55664A0D075043392664B1F9A94E762B28D1DCB95C75AD74"
+		#define JLP_CID           "102009"
+		#define JLP_BRAND         "2"
+		#define F_PRIVATE_KEY     "6E698CA85F407AC0189B264EAC3ACC2720ACA9705AF3A5DF5F5563A14157ABEC"
+		#define AP_SSID           "JDDeng7595"
+	#endif
+
+step 4:  
+    % a/编译固件，切换编译路径来到/build 目录下，执行make TARGET=duet_demo ic_type=5822s
+    % b/烧录固件后，进行测试。
+
+step 5:
+    % 测试过程主要是两步，配网和联网。
+    1、BLE配网
+       设备默认BLE配网，WIFI联网，因此需要在京东云端创建对应的设备。
+       (注意：联网目前使用的方式是HTTP，后续会优化到HTTPS)
+
+    2、热点配网
+       开启/进入 热点配网的AT指令：joylink start
+       退出连接小鲸鱼云端的AT指令：joylink stop
+
+step 6:
+    % 设备联网成功并绑定设备后，可以云端IoT开放平台查看设备在线率等情况。
+
+备注，后续仍需优化点：
+      1 联网方式HTTP优化到HTTPS
+      2 _SAVE_FILE_等flash接口的实现，比如 存取离线LOG等
+      3 JSON数据解析等功能仍需优化,目前已实现小鲸鱼云端可以创建灯类设备，云端控制灯的开关。
+      4 优化demo，优化逻辑比如：第一次配网成功后，掉电重启无需再配网以及适配重新配网等逻辑
+Enjoy!
